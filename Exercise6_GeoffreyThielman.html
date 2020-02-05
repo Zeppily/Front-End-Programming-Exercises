@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Exercise 6 - Geoffrey Thielman</title>
+</head>
+
+<body>
+    <!-- Root container for react components -->
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+
+        function TriviaQuestion() {
+        const [question, setQuestion] = React.useState('');
+        
+
+        const retreiveQuestion = () => {
+            fetch('https://opentdb.com/api.php?amount=1')
+                .then(response => response.json())
+                .then(responseData => {
+                    setQuestion(responseData.results[0].question);
+                })
+                .catch(err => console.error(er))
+
+        } 
+
+        if(question === ''){
+            return(
+            <div>
+                <p>Press the button to receive a question</p>
+                <input type="submit" onClick={retreiveQuestion} value="New Question"/>
+            </div>         
+            )
+        }
+        return (
+            <div>
+                <p>{question} </p>
+                <input type="submit" onClick={retreiveQuestion} value="New Question"/>
+            </div>         
+        )
+        
+      };
+
+      ReactDOM.render(<TriviaQuestion />, document.getElementById("root"));
+
+    </script>
+</body>
+
+</html>
