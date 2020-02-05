@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Exercise 10 - Geoffrey Thielman</title>
+    <title>Exercise 11 - Geoffrey Thielman</title>
 </head>
 
 <body>
@@ -17,18 +17,26 @@
     <script type="text/babel">
         const ShowRepos = () => {
             const [listItems, setListItems] = React.useState([]);
+            const [repositoryName, setRepositoryName] = React.useState('');
+
+            const inputChanged = (event) => {
+                setRepositoryName(event.target.value);
+            }
         
-            React.useEffect(() => {
-                fetch("https://api.github.com/search/repositories?q=react")
+            const getRepo = () => {
+                fetch("https://api.github.com/search/repositories?q=" + repositoryName)
                 .then(response => response.json())
                 .then(responseData => {
                     setListItems(responseData.items);
                 })
                 .catch(err => console.error(err))
-            }, [])
+            }
         
         return (
             <div>
+                <input type="text" onChange={inputChanged} value={repositoryName} name="repository" />
+                <input type="submit" onClick={getRepo} value="Search" />
+                <br />
                 <h2>Repositories</h2>
                 <table>
                     <tbody>
