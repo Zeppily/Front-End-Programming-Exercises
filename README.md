@@ -31,5 +31,5 @@ Using reqres users API to display a list of individuals (name, email and avatar)
 ## Exercise 10 - Github repos
 Using Github API to display a list of react repositories with name and URL
 
-## Exercise 11 - Github repos
+## Exercise 11 - Github repos (with user input)
 Using Github API to display a list of repositories searched by keyword given through input field.
