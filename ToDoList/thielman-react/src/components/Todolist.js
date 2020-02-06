@@ -1,4 +1,5 @@
 import React, {useState,useEffect} from 'react';
+import Todotable from './Todotable';
 
 export default function Todolist(){
     const[todo, setTodo] = useState({desc: '', date: ''});
@@ -31,25 +32,8 @@ export default function Todolist(){
         <input type="text" name="desc" onChange={inputChanged} value={todo.desc}/>
         
         <button onClick={addTodo} >Add</button>
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-            {
-                todos.map((todo, index)=> 
-                    <tr key={index}>
-                        <td>{todo.date}</td>
-                        <td>{todo.desc}</td>
-                        <td><button onClick={() => deleteTodo(index)}>Delete</button></td>                        
-                    </tr>
-                )
-            }
-            </ tbody>
-        </table>
+        <Todotable todos={todos} delete={deleteTodo}/>
+       
     </div>
     );
 }
