@@ -14,6 +14,14 @@ export default function Todolist(){
         /*Creates objects with the current todo values*/ 
     }
 
+    /*Never put a function with parameters in return statement without arrow functions so the called
+    function is referenced instead of immediately called each render.
+    -> always use references in html, dont use function calls*/ 
+    const deleteTodo = (row) => {
+        setTodos(todos.filter((_, index) => row !== index));
+        /* _ refers to a parameter that is not needed/read */
+    }
+
     return(
     <div>
         <label>Date: </label>
@@ -32,10 +40,11 @@ export default function Todolist(){
             </thead>
             <tbody>
             {
-                todos.map(   todo=> 
-                    <tr>
+                todos.map((todo, index)=> 
+                    <tr key={index}>
                         <td>{todo.date}</td>
                         <td>{todo.desc}</td>
+                        <td><button onClick={() => deleteTodo(index)}>Delete</button></td>                        
                     </tr>
                 )
             }
