@@ -1,10 +1,16 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState} from 'react';
 import ReactTable from 'react-table-v6';
 import 'react-table-v6/react-table.css';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from '@date-io/date-fns';
 
 export default function Todolist(){
-    const[todo, setTodo] = useState({desc: '', date: ''});
+    const[todo, setTodo] = useState({desc: '', date: new Date()});
     const[todos, setTodos] = useState([]);
+
+
 
     const inputChanged = (event) => {
         setTodo({...todo, [event.target.name]: event.target.value});
@@ -12,13 +18,15 @@ export default function Todolist(){
     }
     
     const addTodo = (event) => {
-        setTodos([{desc: todo.desc, date: todo.date}, ...todos]);
+        setTodos([{desc: todo.desc, date: todo.date.toLocaleDateString("FI")}, ...todos]);
         /*Creates objects with the current todo values*/ 
     }
+    const changeDate = (date) => {
+        setTodo({
+            ...todo, date: date
+        });
+    }
 
-    /*Never put a function with parameters in return statement without arrow functions so the called
-    function is referenced instead of immediately called each render.
-    -> always use references in html, dont use function calls*/ 
     const deleteTodo = (row) => {
         setTodos(todos.filter((_, index) => row !== index));
         /* _ refers to a parameter that is not needed/read */
@@ -36,23 +44,24 @@ export default function Todolist(){
         {
             Header: 'Remove?',
             Cell: row => (
-                <button onClick={() => deleteTodo(row.index)}>Delete</button>
+                <Button variant="contained" color="secondary" onClick={() => deleteTodo(row.index)}>Delete</Button>
             )
         }
         
-    ]
+    ]  
 
     return(
     <div>
-        <label>Date: </label>
-        <input type="date" name="date" onChange={inputChanged} value={todo.date} />
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <DatePicker onChange={(date) => changeDate(date)} value={todo.date}  format="dd.MM.yyyy" 
+        label="date"/>
+        </MuiPickersUtilsProvider>
 
-        <label>Description: </label>
-        <input type="text" name="desc" onChange={inputChanged} value={todo.desc}/>
+        <TextField required id="filled-basic" label="description" variant="filled" type="text" name="desc" onChange={inputChanged} value={todo.desc}/>
         
-        <button onClick={addTodo} >Add</button>
+        <Button variant='contained' color='primary' onClick={addTodo} >Add</Button>
 
-        <ReactTable data={todos} columns={columns} sortable='true' defaultPageSize='10' />
+        <ReactTable data={todos} columns={columns} sortable={true} defaultPageSize={10} />
        
     </div>
     );
